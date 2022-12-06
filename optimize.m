@@ -1,5 +1,4 @@
-close all
-clear
+close all;clear;
 PWD=pwd;
 addpath(strcat(pwd,'\Cost_Functions'));
 addpath(strcat(pwd,'\Exp_Data'));
