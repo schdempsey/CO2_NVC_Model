@@ -1,4 +1,4 @@
-function [f,c,gf,gc] = Cost_Exp1(theta,Data,Con,stimend,FID)
+function [f,c,gf,gc] = Cost_Exp1_A3(theta,Data,Con,stimend,FID)
     logL=0;
     dlogL = zeros(numel(theta),1);
     options = amioption('sensi',0,...
