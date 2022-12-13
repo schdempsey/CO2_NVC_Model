@@ -140,3 +140,4 @@ model.sym.y(3) = HbR;
 model.sym.y(4) = SaO2;
 model.sym.y(5) = ScO2;
 model.sym.y(6) = SvO2;
+model.sym.y(7) = cCO2_c;

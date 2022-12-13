@@ -12,14 +12,14 @@ function [objectiveFunction, Data, Constants, stimparams, X] = optsetupfunction(
     Data=Data.Data;
     cd(PWD);
     switch choice
-        case 1
-            X = zeros(37,1);
-            objectiveFunction=@(X) Cost_Exp1(X,Data,Constants,stimparams);
         case 2
-            X = zeros(37,1);
-            objectiveFunction=@(X) Cost_Exp2(X,Data,Constants,stimparams);
+            X = zeros(45,1);
+            objectiveFunction=@(X) Cost_Exp1_A3(X,Data,Constants,stimparams);
+        case 1
+            X = zeros(45,1);
+            objectiveFunction=@(X) Cost_Exp1_A3(X,Data,Constants,stimparams);
         case 3
-            X = ones(37,1);
-            objectiveFunction=@(X) Cost_Exp3(X,Data,Constants,stimparams);
+            X = zeros(37,1);
+            objectiveFunction=@(X) Cost_Exp3_A3(X,Data,Constants,stimparams);
     end
 end

@@ -22,7 +22,12 @@ lb(22) = 0;                                  %sinkNO
 lb(30:32) = [0.01 log10(1.3) log10(1.4)];    %K123 circuit
 lb(33:35) = [1 1 1];                         %vis123 circuit
 ub(30:32) = [log10(2) log10(2) 8];           %K123 circuit
-ub(33:35) = [2 2.7 2.7];                     %vis123 circuit
+ub(33:35) = [2 2.7 2.7];  %vis123 circuit
+
+ub(37:43) = 8;  
+lb(44:45) = -8;  
+
+
 problem.x_L       = lb; % essOPT uses a problem structure where crucial information is specified
 problem.x_U       = ub;
 problem.vtr=-100;
@@ -31,15 +36,15 @@ if sum(X)==0
 end
 %% MEIGO OPTIONS I (COMMON TO ALL SOLVERS):
 opts.ndiverse   =100;       %100; %500; %5; %
-opts.maxtime    = 3000;%200;      % MAX-Time of optmization, i.e how long the optimization will last
+opts.maxtime    = 50000;%200;      % MAX-Time of optmization, i.e how long the optimization will last
 opts.maxeval    = 1e8;      % max number of evals, i.e cost function calls
 opts.log_var    = [];    
 opts.local.solver = 'dhc';%dhc'; %'fmincon'; %'nl2sol'; %'mix'; 
 opts.local.finish = opts.local.solver; %uses the local solver to check the best p-vector
 opts.local.bestx = 0;      
 opts.local.balance = 1;   %how far from startguess the local search will push the params, 0.5 default
-opts.local.n1   = 5;%2;        %Number of iterations before applying local search for the 1st time (Default 1)
-opts.local.n2   = 5;%1;        %Minimum number of iterations in the global phase between 2 local calls (Default 10) 
+opts.local.n1   = 20;%2;        %Number of iterations before applying local search for the 1st time (Default 1)
+opts.local.n2   = 20;%1;        %Minimum number of iterations in the global phase between 2 local calls (Default 10) 
 problem.f       = 'meigoDummy'; % calls function that sets up the cost function call
 %% MEIGO OPTIONS II (FOR ESS AND MULTISTART):
 opts.local.iterprint = 1; % prints what going on during optimization

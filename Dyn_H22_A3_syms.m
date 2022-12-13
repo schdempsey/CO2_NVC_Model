@@ -8,35 +8,29 @@ model.param = 'log10';
 % STATES
 % create state syms 
 syms N_NO N_NPY N_Pyr Ca_NO Ca_NPY Ca_Pyr AA PGE2 PGE2vsm NO NOvsm NPY NPYvsm V1 V2 V3 f1 f2 f3 nO2_1 nO2_2 nO2_3 nO2_t cCO2_n cCO2_g vCO2_c cATP_e
-%       1    2    3    4      5     6      7   8   9       10  11   12    13  14 15 16 17 18 19 20     21    22    23    24     25     26     27
 % create state vector
-model.sym.x = [N_NO, N_NPY, N_Pyr, Ca_NO, Ca_NPY, Ca_Pyr, AA, PGE2,...
-    PGE2vsm, NO, NOvsm, NPY, NPYvsm, V1, V2, V3, f1, f2, f3, nO2_1,...
-    nO2_2, nO2_3, nO2_t, cCO2_n, cCO2_g, vCO2_c, cATP_e];
+model.sym.x = [N_NO, N_NPY, N_Pyr, Ca_NO, Ca_NPY, Ca_Pyr, AA, PGE2, PGE2vsm, NO, NOvsm, NPY, NPYvsm, V1, V2, V3, f1, f2, f3, nO2_1, nO2_2, nO2_3, nO2_t,cCO2_n, cCO2_g, vCO2_c, cATP_e];
 %%
 % PARAMETERS ( for these sensitivities will be computed )
 
-% create parameter syms                                                                
-syms k_u1 k_u2 k_u3 kPF1 kPF2 kIN kIN2 kINF kINF2 sinkN_NO sinkN_NPY sinkN_Pyr sinkCa_NO sinkCa_NPY sinkCa_Pyr kPL kCOX kPGE2 sinkPGE2 kNOS kNO sinkNO kNPY Vmax Km sinkNPY ky1 ky2 ky3  K1 K2 K3 vis1 vis2 vis3 kscalemet Km2 kCO2 Dng Dgc kCx26g sinkATP kATP kCx261 kCx262
-
+% create parameter syms                        
+syms k_u1 k_u2 k_u3 kPF1 kPF2 kIN kIN2 kINF kINF2 sinkN_NO sinkN_NPY sinkN_Pyr sinkCa_NO sinkCa_NPY sinkCa_Pyr kPL kCOX kPGE2 sinkPGE2 kNOS kNO sinkNO kNPY Vmax Km sinkNPY ky1 ky2 ky3 K1 K2 K3 vis1 vis2 vis3 kscalemet Km2 kCO2 Dng Dgc kCx26g sinkATP kATP kCx261 kCx262
 % create parameter vector 
-model.sym.p = [k_u1, k_u2, k_u3, kPF1, kPF2, kIN, kIN2, kINF, kINF2, sinkN_NO, sinkN_NPY,...
-    sinkN_Pyr, sinkCa_NO, sinkCa_NPY, sinkCa_Pyr, kPL, kCOX, kPGE2,...
-    sinkPGE2, kNOS, kNO, sinkNO, kNPY, Vmax, Km, sinkNPY, ky1, ky2,...
-    ky3, K1, K2, K3, vis1, vis2, vis3, kscalemet, Km2, kCO2, Dng, Dgc,...
-    kCx26g, sinkATP, kATP, kCx261, kCx262];
+model.sym.p = [k_u1, k_u2, k_u3, kPF1, kPF2, kIN, kIN2, kINF, kINF2,... %9
+    sinkN_NO, sinkN_NPY, sinkN_Pyr, sinkCa_NO, sinkCa_NPY, sinkCa_Pyr,... %15
+    kPL, kCOX, kPGE2, sinkPGE2, kNOS, kNO, sinkNO, kNPY, Vmax, Km, sinkNPY,... %26
+    ky1, ky2, ky3, K1, K2, K3, vis1, vis2, vis3, kscalemet, Km2, kCO2,... %38
+    Dng, Dgc, kCx26g, sinkATP, kATP, kCx261, kCx262];
 %%  
 % CONSTANTS ( for these no sensitivities will be computed )
 % this part is optional and can be ommited
 
 % create parameter syms
-syms NOvsm0 PGE2vsm0 NPYvsm0 cCO2c0 kCa tend g_1 g_2 g_3 g_s CMRO2_0 CO2_l pO2_femart HbO_0 HbR_0 SaO2_0 ScO2_0 SvO2_0 TE B0 cCO2in 
-%    1      2        3       4      5   6    7   8   9   10  11      12    13         14    15    16     17     18     19 20 21
-
+syms NOvsm0 PGE2vsm0 NPYvsm0 kCa tend g_1 g_2 g_3 g_s CMRO2_0 CO2_l pO2_femart HbO_0 HbR_0 SaO2_0 ScO2_0 SvO2_0 TE B0 cCO2in cCO2n0 Tog V1BOLD V2BOLD V3BOLD
 % create parameter vector 
-model.sym.k = [NOvsm0, PGE2vsm0, NPYvsm0, cCO2c0, kCa, tend, g_1, g_2,...
-    g_3 , g_s, CMRO2_0, CO2_l, pO2_femart, HbO_0, HbR_0, SaO2_0, ScO2_0,...
-    SvO2_0,TE, B0, cCO2in];
+model.sym.k = [NOvsm0,PGE2vsm0,NPYvsm0,kCa,tend,g_1,g_2,g_3,g_s,CMRO2_0,... %10
+    CO2_l,pO2_femart,HbO_0,HbR_0,SaO2_0,ScO2_0,SvO2_0,TE,B0,cCO2in,... %20
+    cCO2n0, Tog, V1BOLD, V2BOLD, V3BOLD];
 
 %%
 % SYSTEM EQUATIONS
@@ -46,13 +40,14 @@ model.sym.xdot = sym(zeros(size(model.sym.x)));
 
 u = am_if(am_lt(t,tend),1,0);
 
-model.sym.xdot(1) = (k_u1*u +kPF1*am_max(0,N_Pyr) -kIN*am_max(0,N_NPY))*(1-kCx261*(cCO2c0-cCO2_n)) -sinkN_NO*N_NO; 
-model.sym.xdot(2) = (k_u2*u +kPF2*am_max(0,N_Pyr) -kIN2*am_max(0,N_NO))*(1-kCx262*(cCO2c0-cCO2_n)) -sinkN_NPY*N_NPY; 
+model.sym.xdot(1) = (k_u1*u +kPF1*am_max(0,N_Pyr) -kIN*am_max(0,N_NPY))*(1+kCx262*(cCO2n0-cCO2_n)) -sinkN_NO*N_NO; %altered
+model.sym.xdot(2) = (k_u2*u +kPF2*am_max(0,N_Pyr) -kIN2*am_max(0,N_NO))*(1+kCx261*(cCO2n0-cCO2_n)) -sinkN_NPY*N_NPY; %altered
 model.sym.xdot(3) = k_u3*u -kINF*N_NO -kINF2*N_NPY -sinkN_Pyr*N_Pyr; 
 %% Calcium dynamics
-model.sym.xdot(4) = kCa*(1+N_NO)-sinkCa_NO*Ca_NO;
-model.sym.xdot(5) = kCa*(1+N_NPY)-sinkCa_NPY*Ca_NPY;
-model.sym.xdot(6) = kCa*(1+N_Pyr)+kATP*cATP_e-sinkCa_Pyr*Ca_Pyr;
+model.sym.xdot(4) = kCa*(1+N_NO) - sinkCa_NO*Ca_NO;
+model.sym.xdot(5) = kCa*(1+N_NPY) - sinkCa_NPY*Ca_NPY;
+model.sym.xdot(6) = kCa*(1+N_Pyr) + kATP*cATP_e - sinkCa_Pyr*Ca_Pyr; %altered
+
 %% Pyramidal intracellular signaling AA->PGE2
 model.sym.xdot(7) = kPL*Ca_Pyr-kCOX*AA/(Km2+AA);
 model.sym.xdot(8) = kCOX*AA/(Km2+AA)-kPGE2*PGE2;
@@ -74,7 +69,7 @@ syms C1 C2 C3 f0 R1 R2 R3
 V1ss = 0.29;     V2ss = 0.44;     V3ss = 0.27; 
 R1ss = 0.74;     R2ss = 0.08;     R3ss = 0.18; 
 
-stim_circ = Artdia;
+stim_circ = Tog*Artdia;
 
 p1=1;                           p2=1-R1ss;                      p3=1-(R1ss+R2ss);
 C1ss = V1ss/(p1 - 0.5*R1ss);    C2ss = V2ss/(p2 - 0.5*R2ss);    C3ss = V3ss/(p3 - 0.5*R3ss);
@@ -139,14 +134,14 @@ HbR = HbRa + HbRc + HbRv;
 
 %% BOLD Buxton  
 VI = 0.05;
-Va0 = V1ss*VI;      Vc0 = V2ss*VI;      Vv0 = V3ss*VI;
+Va0 = V1BOLD*VI;      Vc0 = V2BOLD*VI;      Vv0 = V3BOLD*VI;
 Va = V1*VI;         Vc = V2*VI;         Vv = V3*VI;
 Ve = 1 - (Va+Vc+Vv);
 
 % Constants
 Hct=0.44;           Hct_c=0.33;                 deltaChi=2.64*10^-7;        
 gamma=2.68*10^8;    Cav=302.06*Hct + 41.83;     Cc=302.06*Hct_c + 41.83; 
- Aav=14.87*Hct+14.686; Ac=14.87*Hct_c+14.686; 
+Aav=14.87*Hct+14.686; Ac=14.87*Hct_c+14.686; 
 R2e0=25.1; R2a0=Aav+Cav*((1-SaO2_0).^2); R2c0=Ac+Cc*((1-ScO2_0).^2); R2v0=Aav+Cav*((1-SvO2_0).^2);
 lambda=1.15; Se0=exp(-TE*R2e0); Sa0=exp(-TE*R2a0); Sc0=exp(-TE*R2c0); Sv0=exp(-TE*R2v0);
 epsA=lambda*(Sa0/Se0); epsC=lambda*(Sc0/Se0); epsV=lambda*(Sv0/Se0);
@@ -173,68 +168,44 @@ Sc=epsC*Vc*exp(-TE*deltaR2c);
 Sv=epsV*Vv*exp(-TE*deltaR2v);
 Se=Ve*exp(-TE*deltaR2e);
 
-H=((1 - VI) + epsA*Va0 + epsC*Vc0 + epsV*Vv0);
-
+H=((Ve) + epsA*Va0 + epsC*Vc0 + epsV*Vv0);
 %% M matrix
-    matris = eye(size(model.sym.x,2),size(model.sym.x,2));
-    matris(17,17) = 0;  matris(18,18) = 0; matris(19,19) = 0;   
-    
-    model.sym.M= matris;
-
+matris = eye(size(model.sym.x,2),size(model.sym.x,2));
+matris(17,17) = 0;  matris(18,18) = 0; matris(19,19) = 0;   
+model.sym.M= matris;
 %% output simplifications
-OutArtdia=(V1/L1).^(1/2);
-ssOutArtdia =(V1ss/L1).^(1/2);
-
-% OutCapdia = (V2/(L2))^(1/2);
-% ssOutCapdia = (V2ss/(L2))^(1/2);
-
-OutVendia=(V3/L3).^(1/2);
-ssOutVendia =(V3ss/L3).^(1/2);
-
-CBV = V1 + V2 + V3;
 CBF = (V1*(f0 + f1) + V2*(f1 + f2) + V3*(f2 + f3))/(2*(V1 + V2 + V3));
-
 BOLDHuber = (1/H)*(Se+Sa+Sc+Sv);
-BOLDShmuel = 100*((1/H)*(Se+Sa+Sc+Sv)-1);
-
-%HbTout = ((V1-V1ss) + (V2-V2ss) + (V3-V3ss))*100; 
-%HbOout = (HbO - HbO_0)*100;                   
-%HbRout = (HbR - HbR_0)*100;   
-
+BOLDShmuel = 100*((1/H)*(Se+Sa+Sc+Sv)-1);    
 %% CO2 Dynamics
 % Order, neuron, glial, capillary, ATP.
 %cCO2_n cCO2_g cCO2_c cATP_e
 %kCO2 Dng Dgc kCx26g sinkATP kATP 
 cCO2_c=vCO2_c/V2;
-model.sym.xdot(24) = kCO2*CMRO2_0 - Dng*(cCO2_n-cCO2_g);
-model.sym.xdot(25) = Dng*(cCO2_n-cCO2_g) - Dng*(cCO2_g-cCO2_c);
-model.sym.xdot(26) = Dng*(cCO2_g-cCO2_c) + cCO2in*f1-cCO2_c*f2;
+model.sym.xdot(24) = kCO2*CMRO2 - Dng*(cCO2_n-cCO2_g);
+model.sym.xdot(25) = Dng*(cCO2_n-cCO2_g) - Dgc*(cCO2_g-cCO2_c);
+model.sym.xdot(26) = Dgc*(cCO2_g-cCO2_c) + cCO2in*f1 - cCO2_c*f2;
 model.sym.xdot(27) = kCx26g*cCO2_g - sinkATP*cATP_e;
-
 %%
-% INITIAL CONDITIONS
-model.sym.x0(1:13) = 0; %neuron dynamics
-model.sym.x0(14:19) = [0.29; 0.44; 0.27; 1; 1; 1]; %volumes and flows
-model.sym.x0(20:23) = 1; %n's
-model.sym.x0(24:26) = 0.3; %Concentration CO2 in neuron, glial, cap
-model.sym.x0(27) = 0; %ATP
-
+% Initial Conditions
+model.sym.x0(1:13) = 0;
+model.sym.x0(14:19) = [0.29; 0.44; 0.27; 1; 1; 1];
+model.sym.x0(20:23) = 1;
+model.sym.x0(24:26) = [0.3,0.3,0.3];
+model.sym.x0(27) = 0;
 model.sym.dx0 = sym(zeros(size(model.sym.x)));
-
-% OBSERVALES
-model.sym.y = sym(zeros(10,1)); 
-model.sym.y(1) = 100*((OutArtdia - ssOutArtdia)./ssOutArtdia);
-model.sym.y(2) = 100*((OutVendia - ssOutVendia)./ssOutVendia);
-model.sym.y(3) = 100*(CBV -1);
-model.sym.y(4) = BOLDHuber;
-model.sym.y(5) = CBF;
-model.sym.y(6) = BOLDShmuel;
-model.sym.y(7) = ky3*N_Pyr;
-model.sym.y(8) = pO2_1;
-model.sym.y(9) = pO2_2;
-model.sym.y(10) = pO2_3;
-model.sym.y(11) = pO2_t;
-model.sym.y(12) = G;
-model.sym.y(13) = Artdia;
-
+% Observables
+model.sym.y = sym(zeros(12,1)); 
+model.sym.y(1) = BOLDHuber;
+model.sym.y(2) = CBF;
+model.sym.y(3) = BOLDShmuel;
+model.sym.y(4) = pO2_t;
+model.sym.y(5) = G;
+model.sym.y(6) = HbO;
+model.sym.y(7) = HbR;
+model.sym.y(8) = SaO2;
+model.sym.y(9) = ScO2;
+model.sym.y(10) = SvO2;
+model.sym.y(11) = cCO2_c;
+model.sym.y(12) = Artdia;
 end
