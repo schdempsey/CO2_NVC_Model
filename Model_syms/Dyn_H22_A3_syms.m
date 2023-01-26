@@ -33,13 +33,13 @@ model.sym.k = [NOvsm0,PGE2vsm0,NPYvsm0,kCa,tend,g_1,g_2,g_3,g_s,CMRO2_0,... %10
 syms t 
 model.sym.xdot = sym(zeros(size(model.sym.x)));
 u = am_if(am_lt(t,tend),1,0);
-model.sym.xdot(1) = (k_u1*u +kPF1*am_max(0,N_Pyr) -kIN*am_max(0,N_NPY))*(1+kCx262*(cCO2n0-cCO2_n)) -sinkN_NO*N_NO; %altered
-model.sym.xdot(2) = (k_u2*u +kPF2*am_max(0,N_Pyr) -kIN2*am_max(0,N_NO))*(1+kCx261*(cCO2n0-cCO2_n)) -sinkN_NPY*N_NPY; %altered
+model.sym.xdot(1) = (k_u1*u +kPF1*am_max(0,N_Pyr) -kIN*am_max(0,N_NPY))*(1+kCx262*(cCO2n0-cCO2_n)) -sinkN_NO*N_NO;
+model.sym.xdot(2) = (k_u2*u +kPF2*am_max(0,N_Pyr) -kIN2*am_max(0,N_NO))*(1+kCx261*(cCO2n0-cCO2_n)) -sinkN_NPY*N_NPY;
 model.sym.xdot(3) = k_u3*u -kINF*N_NO -kINF2*N_NPY -sinkN_Pyr*N_Pyr; 
 %% Calcium dynamics
 model.sym.xdot(4) = kCa*(1+N_NO) - sinkCa_NO*Ca_NO;
 model.sym.xdot(5) = kCa*(1+N_NPY) - sinkCa_NPY*Ca_NPY;
-model.sym.xdot(6) = kCa*(1+N_Pyr) + kATP*cATP_e - sinkCa_Pyr*Ca_Pyr; %altered
+model.sym.xdot(6) = kCa*(1+N_Pyr) + kATP*cATP_e - sinkCa_Pyr*Ca_Pyr;
 %% Pyramidal intracellular signaling AA->PGE2
 model.sym.xdot(7) = kPL*Ca_Pyr-kCOX*AA/(Km2+AA);
 model.sym.xdot(8) = kCOX*AA/(Km2+AA)-kPGE2*PGE2;
@@ -105,9 +105,11 @@ HbOout = (HbO - HbO_0)*100;
 HbRout = (HbR - HbR_0)*100; 
 %% BOLD Buxton  
 VI = 0.05;
-Va0 = V1BOLD*VI;      Vc0 = V2BOLD*VI;      Vv0 = V3BOLD*VI; %changed to bold
+Va0 = V1BOLD*VI;      Vc0 = V2BOLD*VI;      Vv0 = V3BOLD*VI; %changed to bold, 
+%The BOLD volumes just mean we're using updates volumes after dilation from
+%a previous CO2 percentage as baseline.
 Va = V1*VI;         Vc = V2*VI;         Vv = V3*VI;
-Ve = 1 - (Va+Vc+Vv);
+Ve = 1 - (Va+Vc+Vv); %Had to modify thisform the 0.95 Ve in Sten 2023 which wasn't general.
 % Constants
 Hct=0.44;           Hct_c=0.33;                 deltaChi=2.64*10^-7;        
 gamma=2.68*10^8;    Cav=302.06*Hct + 41.83;     Cc=302.06*Hct_c + 41.83; 
@@ -131,8 +133,8 @@ deltaR2e=preAV*(deltaR2ea+deltaR2ev)+preC*deltaR2ec;
 Sa=epsA*Va*exp(-TE*deltaR2a);
 Sc=epsC*Vc*exp(-TE*deltaR2c);
 Sv=epsV*Vv*exp(-TE*deltaR2v);
-Se=Ve*exp(-TE*deltaR2e);
-H=((Ve) + epsA*Va0 + epsC*Vc0 + epsV*Vv0);
+Se=Ve*exp(-TE*deltaR2e); %Make sure to use Ve.
+H=((Ve) + epsA*Va0 + epsC*Vc0 + epsV*Vv0); %use Ve.
 %% M matrix
 matris = eye(size(model.sym.x,2),size(model.sym.x,2));
 matris(17,17) = 0;  matris(18,18) = 0; matris(19,19) = 0;   
@@ -147,8 +149,8 @@ model.sym.xdot(24) = kCO2*CMRO2 - Dng*(cCO2_n-cCO2_g);
 model.sym.xdot(25) = Dng*(cCO2_n-cCO2_g) - Dgc*(cCO2_g-cCO2_c);
 model.sym.xdot(26) = Dgc*(cCO2_g-cCO2_c) + cCO2in*f1 - cCO2_c*f2;
 model.sym.xdot(27) = kCx26g*cCO2_g - sinkATP*cATP_e;
-KONO=(1+kCx261*(cCO2n0-cCO2_n));
-KONPY=(1+kCx262*(cCO2n0-cCO2_n));
+KONO=(1+kCx261*(cCO2n0-cCO2_n)); %knock out NO
+KONPY=(1+kCx262*(cCO2n0-cCO2_n)); %Knock out NPY for investigation
 %%
 % Initial Conditions
 model.sym.x0(1:13) = 0;

@@ -66,17 +66,17 @@ function [f,c,gf,gc] = Cost_Exp1_A3(theta,Data,Con,stimend,FID)
         NPYVSM = 10^theta(29)*(solC0.x(1:100:1101,13)-solC0.x(1,13));
         %NOKO = solC5.y(1:100:1101,4);
         %NPYKO = solC5.y(1:100:1101,5);
-        if sum(abs(NOVSM))<=0.2
+        if sum(abs(NOVSM))<=0.2 %Enforce some activity
             cost11m1 = 100;
         else
             cost11m1=0;
         end
-        if sum(abs(PGEVSM))<=0.2
+        if sum(abs(PGEVSM))<=0.2 %Enforce some activity
             cost22m1 = 100;
         else
             cost22m1=0;
         end
-        if sum(abs(NPYVSM))<=0.2
+        if sum(abs(NPYVSM))<=0.2 %Enforce some activity
             cost33m1 = 100;
         else
             cost33m1=0;
@@ -88,21 +88,21 @@ function [f,c,gf,gc] = Cost_Exp1_A3(theta,Data,Con,stimend,FID)
         Co2n = solC0.x(1,24);
         Co2c = solC0.y(1,17);
         if Co2n/Co2c >= 1.3
-            costCO2 = 500*abs(Co2n/Co2c-1.4)^2;
+            costCO2 = 500*abs(Co2n/Co2c-1.3)^2; %keep CO2 in neuron and astrocyte close
         else
             costCO2 = 0;
         end
         %% Final Cost Summation
         logL = logL + costCBFC0 + costBOLDC0 + costCBFC5 + costBOLDC5;
-        logL = logL + cost11m1 +cost22m1+cost33m1; %make sure all arms are running
-        logL = logL +costCO2; %diffusion cost
+        %logL = logL + cost11m1 +cost22m1+cost33m1; %make sure all arms are running
+        %logL = logL +costCO2; %diffusion cost
     end
     f = logL;
     gf = dlogL;
     c = [];
     gc = [];
     %% MCMC related, save parameters to file
-    if nargin == 5 && logL < chi2inv(0.95,47) 
+    if nargin == 5 && logL < chi2inv(0.95,47) %48 measured data points in cost fn total
         fprintf(FID,'%4.10f %10.10f ',[f, theta']); fprintf(FID,'\n');
     end
 end
