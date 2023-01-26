@@ -5,7 +5,7 @@
 function [objectiveFunction, Data, Constants, stimparams, X] = optsetupfunction(choice)
     Constants=load('Constants.mat');
     Constants=Constants.Constants;
-    stimparams=60; %stimulation time
+    stimparams=[0 30 90 14 10];; %stimulation time
     PWD=pwd;
     cd(strcat(PWD,'\Exp_Data'))
     Data=load(strcat('Exp',num2str(choice),'.mat'));
