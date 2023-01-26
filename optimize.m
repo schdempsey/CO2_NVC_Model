@@ -22,11 +22,8 @@ lb(33:35) = [1 1 1];                         %vis123 circuit
 ub(30:32) = [log10(2) log10(2) 8];           %K123 circuit
 ub(33:35) = [2 2.7 2.7];  %vis123 circuit
 
-ub(37:45) = 8;   
-lb(37:45) = -12;
-lb(44:45) = -2;
-ub(44:45) = 2;   
-lb(38:39) = -2;
+ub(37:45) = 8; %new Param upper bounds
+lb(37:45) = -8; %new Param lower bounds
 
 problem.x_L       = lb; % essOPT uses a problem structure where crucial information is specified
 problem.x_U       = ub;

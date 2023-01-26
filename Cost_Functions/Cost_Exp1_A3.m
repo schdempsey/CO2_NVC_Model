@@ -7,7 +7,7 @@ function [f,c,gf,gc] = Cost_Exp1_A3(theta,Data,Con,stimend,FID)
     options.nmaxevent = 1e3;
     options.atol = 1e-6;
     options.rtol = 1e-12;
-    stimTime=stimend; %stimtime
+    stimTime=60;%stimend; %stimtime
     %% Steady state simulation
     Ca_start = 10; %Constant Calcium Production
     cCO2in=1; %Normalized CO2 in
@@ -34,16 +34,16 @@ function [f,c,gf,gc] = Cost_Exp1_A3(theta,Data,Con,stimend,FID)
     %% New CO2 Steady State Sim- 5% increase
     Constants2(5)=0; %No neuronal stim, but CO2 can change G because Tog=1 
     Constants2(20)=C5; %new CO2 concentration
-    solSSC5 = simulate_Dyn_H22_A3(inf,theta,Constants2,[],options); %sim no stim with new C inf 
+    solSSC5 = simulate_Dyn_H22_A3(0:.1:500,theta,Constants2,[],options); %sim no stim with new C inf 
     %% Get new C5 SS BOLD ONLY inputs
-    HbO_0 = solSSC5.y(3);
-    HbR_0 = solSSC5.y(4);
-    SaO2_0 = solSSC5.y(5);
-    ScO2_0 = solSSC5.y(6);
-    SvO2_0 = solSSC5.y(7);
-    V1=solSSC5.x(14);
-    V2=solSSC5.x(15);
-    V3=solSSC5.x(16);
+    HbO_0 = solSSC5.y(end,3);
+    HbR_0 = solSSC5.y(end,4);
+    SaO2_0 = solSSC5.y(end,5);
+    ScO2_0 = solSSC5.y(end,6);
+    SvO2_0 = solSSC5.y(end,7);
+    V1=solSSC5.x(end,14);
+    V2=solSSC5.x(end,15);
+    V3=solSSC5.x(end,16);
     Constants3=Constants2;
     Constants3(5)=stimTime;
     Constants3(13:17) = [HbO_0,HbR_0,SaO2_0,ScO2_0,SvO2_0]; %To reset BOLD

@@ -2,8 +2,8 @@ clc;clear;%close all;
 %%%%%%%%%%%%%%%%%%%%%%
 % Plot Setup Variables
 ExpNum=1;
-PlotSimFlag=0; %Make zero if you want to just plot the experimental data
-plotMetabolites=0;
+PlotSimFlag=1; %Make zero if you want to just plot the experimental data
+plotMetabolites=1;
 datafilename=''; %If you want to load a specific filename you can put it 
     %here, otherwise you can pick from the file browser if left blank
 %%%%%%%%%%%%%%%%%%%%%%
@@ -69,7 +69,7 @@ if PlotSimFlag==1
     options.atol = 1e-6;
     options.rtol = 1e-12;
     stimTime=60; %stimtime, do not change.
-    simLen=110; %default 110, can make longer if you want to see more
+    simLen=300;%110; %default 110, can make longer if you want to see more
     fontS=10; %font size for all figs.
     %% Steady state simulation
     Ca_start = 10; %Constant Calcium Production
@@ -98,16 +98,16 @@ if PlotSimFlag==1
     %% New CO2 Steady State Sim at 5% increase
     Constants2(5)=0; %No neuronal stim, but CO2 can change G and dilation because Tog=1 
     Constants2(20)=C5; %new CO2 concentration
-    solSSC5 = simulate_Dyn_H22_A3(inf,theta,Constants2,[],options); %sim no stim with new C inf 
+    solSSC5 = simulate_Dyn_H22_A3(0:.1:500,theta,Constants2,[],options); %sim no stim with new C inf 
     %% Get new C5 SS BOLD ONLY inputs
-    HbO_0 = solSSC5.y(3);
-    HbR_0 = solSSC5.y(4);
-    SaO2_0 = solSSC5.y(5);
-    ScO2_0 = solSSC5.y(6);
-    SvO2_0 = solSSC5.y(7);
-    V1=solSSC5.x(14);
-    V2=solSSC5.x(15);
-    V3=solSSC5.x(16);
+    HbO_0 = solSSC5.y(end,3);
+    HbR_0 = solSSC5.y(end,4);
+    SaO2_0 = solSSC5.y(end,5);
+    ScO2_0 = solSSC5.y(end,6);
+    SvO2_0 = solSSC5.y(end,7);
+    V1=solSSC5.x(end,14);
+    V2=solSSC5.x(end,15);
+    V3=solSSC5.x(end,16);
     Constants3=Constants2;
     Constants3(5)=stimTime;
     Constants3(13:17) = [HbO_0,HbR_0,SaO2_0,ScO2_0,SvO2_0];
@@ -118,8 +118,8 @@ if PlotSimFlag==1
     %% New CO2 Steady State Sim- 10% increase PREDICTION
     Constants3(5)=0; %No neuronal stim, but CO2 can change G because Tog=1 
     Constants3(20)=C10; %new CO2 concentration
-    solSSC10 = simulate_Dyn_H22_A3(inf,theta,Constants3,[],options); %sim no stim with new C inf 
-    %solSSC10 = simulate_Dyn_H22_A3(0:.1:5000,theta,Constants3,[],options); 
+    %solSSC10 = simulate_Dyn_H22_A3(inf,theta,Constants3,[],options); %sim no stim with new C inf 
+    solSSC10 = simulate_Dyn_H22_A3(0:.1:5000,theta,Constants3,[],options); 
     %sim no stim with new C for 5000 seconds because the inf option might have failed
     %% Get new C5 SS BOLD ONLY inputs
     HbO_0 = solSSC10.y(end,3);
